@@ -1,0 +1,82 @@
+```{r}
+#importing dataset
+df = read.csv("D:\\SEM6\\CSE3506\\J Component\\exo.csv")
+head(df)
+```
+
+```{r}
+summary(df)
+```
+```{r}
+str(df) #structure
+```
+```{r}
+table(df$koi_tce_delivname)
+```
+
+```{r}
+#removing keepler_name, koi_teq_err1, koi_teq_err2, koi_tce_delivname
+df <- df[, !(names(df) %in% c('kepler_name', 'koi_teq_err1', 'koi_teq_err2', 'koi_tce_delivname'))]
+str(df)
+
+```
+
+
+```{r}
+#imputation for null values using mean
+
+
+```
+
+```{r}
+head(df, 100)
+```
+
+```{r}
+#imputation for null values using mean
+#Install tidyr package
+
+install.packages('tidyr')
+#Load the library
+library(tidyr)
+df1 <- df %>% fill(koi_score, .direction = 'up')
+
+```
+
+
+```{r}
+write.csv(df1, "D:\\SEM6\\CSE3506\\J Component\\exo_clean.csv")
+```
+ 
+```{r}
+#checking if null/ NA values still exist
+is.na(df1)
+```
+
+```{r}
+#Choosing the target variable
+table(df1$koi_disposition)
+```
+```{r}
+library(ggplot2)
+count <- table(df1$koi_disposition)
+barplot(count)
+```
+
+
+```{r}
+#Choosing the target variable
+table(df1$koi_pdisposition)
+```
+
+```{r}
+
+library(ggplot2)
+count <- table(df1$koi_pdisposition)
+barplot(count)
+
+```
+```{r}
+
+```
+

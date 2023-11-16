@@ -1,0 +1,127 @@
+```{r}
+#importing dataset
+df = read.csv("C:\\Users\\DELL\\Downloads\\cumulative.csv")
+head(df)
+```
+
+```{r}
+summary(df)
+```
+```{r}
+str(df) #structure
+```
+```{r}
+table(df$koi_tce_delivname)
+```
+
+```{r}
+#removing keepler_name, koi_teq_err1, koi_teq_err2, koi_tce_delivname
+df <- df[, !(names(df) %in% c('kepler_name', 'koi_teq_err1', 'koi_teq_err2', 'koi_tce_delivname'))]
+str(df)
+
+```
+
+
+```{r}
+#imputation for null values using mean
+
+
+```
+
+```{r}
+head(df, 100)
+```
+
+```{r}
+#imputation for null values using mean
+#Install tidyr package
+
+install.packages('tidyr')
+#Load the library
+library(tidyr)
+df1 <- df %>% fill(koi_score, .direction = 'up')
+df1
+
+
+
+
+```
+```{r}
+#checking if null/ NA values still exist
+is.na(df1)
+```
+
+```{r}
+#Choosing the target variable
+table(df1$koi_disposition)
+```
+```{r}
+library(ggplot2)
+count <- table(df1$koi_disposition)
+barplot(count)
+```
+
+
+```{r}
+#Choosing the target variable
+table(df1$koi_pdisposition)
+```
+
+```{r}
+
+library(ggplot2)
+count <- table(df1$koi_pdisposition)
+barplot(count)
+
+```
+```{r}
+
+#Load the library
+library(tidyr)
+library(dplyr)
+
+candidate = df1 %>% 
+  group_by(rowid) %>%
+  filter(koi_pdisposition=="CANDIDATE")
+
+candidate
+```
+```{r}
+FP = df1 %>% 
+  group_by(rowid) %>%
+  filter(koi_pdisposition=="FALSE POSITIVE")
+
+FP
+```
+```{r}
+ra_f = FP$ra
+dec_f = FP$dec
+
+ra_c = candidate$ra
+dec_c = candidate$dec
+
+plot(ra_f, dec_f, col="blue")
+
+points(ra_c, dec_c, col = "yellow")
+
+```
+```{r}
+plot(df$koi_depth, df$koi_duration, col="blue", main="Disposition Using Kepler Data")
+```
+```{r}
+#some attributes that contributed to confirm exoplanets in the Exoplanet_Archive_Disposition (koi_disposition).
+
+confirmed = df1 %>%
+  filter(koi_disposition == "CONFIRMED")
+
+confirmed
+
+```
+```{r}
+h <- hist(df$koi_teq, col = "blue")
+xfit <- seq(min(df$koi_teq), max(df$koi_teq), length = 40)
+yfit <- dnorm(xfit, mean=mean(df$koi_teq), sd=sd(x))
+yfit <- yfit*diff(h$mids[1:2])*length(df$koi_teq)
+
+lines(xfit, yfit, col="blue")
+```
